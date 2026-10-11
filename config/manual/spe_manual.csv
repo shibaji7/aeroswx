@@ -1,0 +1,4 @@
+# Manual-entry NOAA solar proton event (SPE) table.
+# Fill in rows from https://www.swpc.noaa.gov/ (SPE list); lines starting with '#' are ignored.
+# Times are UTC ISO-8601. peak_flux_pfu = >10 MeV proton flux peak (pfu); noaa_scale = S1..S5 (optional).
+start_time,max_time,end_time,peak_flux_pfu,noaa_scale

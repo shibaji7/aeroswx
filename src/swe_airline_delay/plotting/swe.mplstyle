@@ -1,0 +1,41 @@
+# swe-airline-delay: publication style. Palette: deep blue #003366, golden yellow #FFCC00,
+# white #FFFFFF, light grey #F0F0F0.
+figure.facecolor: FFFFFF
+figure.figsize: 6.8, 4.0
+figure.dpi: 110
+savefig.dpi: 300
+savefig.bbox: tight
+savefig.facecolor: FFFFFF
+
+axes.facecolor: FFFFFF
+axes.edgecolor: 4A4A4A
+axes.linewidth: 0.8
+axes.grid: True
+axes.axisbelow: True
+axes.spines.top: False
+axes.spines.right: False
+axes.labelsize: 10
+axes.titlesize: 11
+axes.titleweight: bold
+axes.titlelocation: left
+axes.prop_cycle: cycler('color', ['003366', 'FFCC00', '5C7FA3', '8A6D00', '9AA5B1', 'C23B22'])
+
+grid.color: F0F0F0
+grid.linewidth: 0.9
+
+font.family: sans-serif
+font.sans-serif: DejaVu Sans, Helvetica, Arial
+font.size: 10
+text.color: 1F2933
+axes.labelcolor: 1F2933
+xtick.color: 4A4A4A
+ytick.color: 4A4A4A
+xtick.direction: out
+ytick.direction: out
+
+lines.linewidth: 1.6
+lines.markersize: 5
+errorbar.capsize: 3
+
+legend.frameon: False
+legend.fontsize: 9

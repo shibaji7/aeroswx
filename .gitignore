@@ -218,3 +218,12 @@ __marimo__/
 
 # Streamlit
 .streamlit/secrets.toml
+
+# --- swe-airline-delay data (never commit data; keep the directory skeleton) ---
+data/raw/*
+data/interim/*
+data/processed/*
+data/data_manifest.yaml
+!data/raw/.gitkeep
+!data/interim/.gitkeep
+!data/processed/.gitkeep

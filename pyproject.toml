@@ -1,0 +1,63 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "swe-airline-delay"
+version = "0.1.0"
+description = "Data pipeline for space-weather-event (SWE) impact on top-20 US airport delays (free/open sources only)."
+readme = "README.md"
+requires-python = ">=3.11"
+license = { text = "MIT" }
+dependencies = [
+    "pandas>=2,<4",
+    "numpy>=1.26",
+    "xarray>=2024.1",
+    "pyarrow>=14",
+    "h5py>=3.10",
+    "pyyaml>=6",
+    "python-dotenv>=1",
+    "requests>=2.31",
+    "tqdm>=4.66",
+    "loguru>=0.7",
+    "typer>=0.12",
+    "matplotlib>=3.8",
+    "seaborn>=0.13",
+    "cartopy>=0.22",
+    "lxml>=5",
+]
+
+[project.optional-dependencies]
+# Heavy / optional back-ends; imported lazily inside the fetchers.
+adsb = ["traffic>=2", "opensky-api>=1.0"]
+spacewx = ["cdasws>=1.7", "sunpy>=6"]
+dev = ["pytest>=8", "pytest-mock>=3", "black>=24", "ruff>=0.4", "pre-commit>=3", "nbclient", "ipykernel"]
+
+[project.scripts]
+swe-fetch = "swe_airline_delay.cli:fetch_app"
+swe-align = "swe_airline_delay.cli:align_app"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.setuptools.package-data]
+swe_airline_delay = ["plotting/*.mplstyle"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = "-q"
+
+[tool.black]
+line-length = 100
+target-version = ["py311"]
+
+[tool.ruff]
+line-length = 100
+target-version = "py311"
+
+[tool.ruff.lint]
+select = ["E", "F", "W", "I", "B", "UP"]
+ignore = ["B008"]  # typer.Option(...) defaults in signatures
+
+[tool.ruff.lint.per-file-ignores]
+"tests/*" = ["E501"]

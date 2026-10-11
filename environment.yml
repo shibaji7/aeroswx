@@ -1,0 +1,40 @@
+# All packages are free / open-source. Nothing here requires a paid plan or key.
+name: swe-airline-delay
+channels:
+  - conda-forge
+dependencies:
+  - python=3.11
+  # core
+  - pandas=2
+  - numpy=1
+  - xarray=2024
+  - pyarrow=16
+  - h5py=3
+  - pyyaml=6
+  - python-dotenv=1
+  - requests=2
+  - tqdm=4
+  - loguru=0.7
+  - lxml=5          # pandas.read_html (Richardson & Cane ICME table)
+  # CLI
+  - typer=0.12
+  # ADS-B / live tracking (traffic ships a free OpenSky integration)
+  - traffic=2
+  # space weather
+  - sunpy=6         # GOES XRS via Fido (optional backend)
+  # plotting
+  - matplotlib=3
+  - seaborn=0.13
+  - cartopy=0.23
+  # dev
+  - pytest=8
+  - pytest-mock=3
+  - black=24
+  - ruff=0.4
+  - pre-commit=3
+  - ipykernel
+  - nbclient
+  - pip
+  - pip:
+      - opensky-api>=1.0   # free; higher rate limits need a FREE OpenSky account
+      - cdasws>=1.7        # NASA CDAWeb web services (OMNIWeb), no key

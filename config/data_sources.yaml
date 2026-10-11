@@ -1,0 +1,95 @@
+# Registry of every external data source used by this pipeline.
+#
+# This file is also the project's RECORD THAT NO PAID SOURCE IS USED.
+# Every entry has `free_for_research: true`; if a source ever required a paid
+# plan/key it must NOT be added here and must not be used anywhere in the code.
+# `last_verified` is left null where the endpoint could not be confirmed with
+# live access when this file was written -- fill it in on first real run.
+sources:
+  bts_ontime:
+    description: "BTS On-Time Reporting Carrier On-Time Performance (1987-present), monthly zips"
+    used_by: src/swe_airline_delay/flight_delay/bts.py
+    base_url: "https://transtats.bts.gov/PREZIP/"
+    file_pattern: "On_Time_Reporting_Carrier_On_Time_Performance_1987_present_{year}_{month}.zip"
+    landing_page: "https://www.transtats.bts.gov/DL_SelectFields.aspx?gnoyr_VQ=FGJ&QO_fu146_anzr=b0-gvzr"
+    auth: none
+    rate_limits: "No published limit; be polite (sequential downloads, cached under data/raw/bts)."
+    reporting_lag: "~1-2 months"
+    license: "US Government work, public domain. https://www.bts.gov/privacy-policy-and-terms-of-use"
+    free_for_research: true
+    last_verified: null
+  opensky_rest:
+    description: "OpenSky Network REST API (live state vectors; flights endpoints)"
+    used_by: src/swe_airline_delay/adsb/opensky.py
+    base_url: "https://opensky-network.org/api"
+    token_url: "https://auth.opensky-network.org/auth/realms/opensky-network/protocol/openid-connect/token"
+    auth: "none (anonymous) or FREE registration -> OAuth2 client credentials (OPENSKY_CLIENT_ID/SECRET)"
+    rate_limits: >-
+      Daily credit budget; anonymous users get a much smaller budget and shorter
+      history than registered users (see OpenSky REST docs for current numbers).
+      Registration is free and only raises limits -- it is not required.
+    license: "Free for research / non-commercial use. https://opensky-network.org/about/terms-of-use"
+    free_for_research: true
+    last_verified: null
+  opensky_historical:
+    description: "OpenSky historical database (Impala shell) accessed through the `traffic` library"
+    used_by: src/swe_airline_delay/adsb/opensky.py
+    base_url: "https://opensky-network.org/data/impala"
+    auth: "FREE OpenSky account whose research access has been approved by OpenSky; configured in traffic's own config file, not in .env"
+    rate_limits: "Per-query size/time limits; pipeline chunks requests by day."
+    license: "Free for research/academic use under the OpenSky terms of use (above). Cite: Schafer et al., IPSN 2014."
+    free_for_research: true
+    last_verified: null
+  nasa_omniweb_cdaweb:
+    description: "OMNI2 hourly (OMNI2_H0_MRG1HR) and OMNI high-res 1-min (OMNI_HRO_1MIN) via CDAWeb web services"
+    used_by: src/swe_airline_delay/space_weather/omni.py
+    base_url: "https://cdaweb.gsfc.nasa.gov/WS/cdasr/1"
+    auth: none
+    rate_limits: "No key; cdasws splits large requests. Be polite."
+    license: "NASA open data. Acknowledge OMNI / SPDF per https://omniweb.gsfc.nasa.gov/html/ow_data.html and https://science.nasa.gov/earth-science/earth-science-data/data-information-policy/"
+    free_for_research: true
+    last_verified: null
+  noaa_swpc:
+    description: "NOAA SWPC JSON/text services (GOES XRS real-time, flare list, daily event reports)"
+    used_by: [src/swe_airline_delay/space_weather/goes_xray.py, src/swe_airline_delay/space_weather/events.py]
+    base_url: "https://services.swpc.noaa.gov"
+    archive_url: "https://ftp.swpc.noaa.gov/pub/indices/events/"
+    auth: none
+    rate_limits: "No key; JSON products refresh every minute -- do not poll faster."
+    license: "US Government work, public domain. https://www.weather.gov/disclaimer"
+    free_for_research: true
+    last_verified: null
+  noaa_ncei_goes_xrs:
+    description: "NOAA NCEI/NGDC GOES-R XRS L2 science-quality 1-min averages (netCDF4), 2017-present"
+    used_by: src/swe_airline_delay/space_weather/goes_xray.py
+    base_url: "https://data.ngdc.noaa.gov/platforms/solar-space-observing-satellites/goes/"
+    auth: none
+    rate_limits: "No key; one small file per day."
+    license: "US Government work, public domain. https://www.ngdc.noaa.gov/ngdcinfo/privacy.html"
+    free_for_research: true
+    last_verified: null
+  richardson_cane_icme:
+    description: "Near-Earth interplanetary coronal mass ejections since 1996 (Richardson & Cane)"
+    used_by: src/swe_airline_delay/space_weather/events.py
+    base_url: "https://www.srl.caltech.edu/ACE/ASC/DATA/level3/icmetable2.htm"
+    auth: none
+    rate_limits: "Single static page."
+    license: "Freely hosted by the ACE Science Center; please cite Cane & Richardson (2003, JGR 108, 1156) and Richardson & Cane (2010, Sol. Phys. 264, 189)."
+    free_for_research: true
+    last_verified: null
+  noaa_spe_list:
+    description: "NOAA SWPC solar proton event list"
+    used_by: src/swe_airline_delay/space_weather/events.py
+    base_url: null
+    auth: none
+    note: "No plain-table URL confirmed; the pipeline reads a manual-entry CSV (config/manual/spe_manual.csv)."
+    license: "US Government work, public domain."
+    free_for_research: true
+    last_verified: null
+  madrigal_tec:
+    description: "Madrigal database GNSS TEC (NOT YET IMPLEMENTED -- see space_weather/ionosphere.py)"
+    base_url: "https://cedar.openmadrigal.org"
+    auth: "free registration (name/email/affiliation) via the open `madrigalWeb` client"
+    license: "Open data under CEDAR rules of the road. https://cedar.openmadrigal.org/static/rulesoftheroad.html"
+    free_for_research: true
+    last_verified: null
